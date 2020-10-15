@@ -1,0 +1,52 @@
+{
+"button" : {
+	"fontSize" : "14px",
+	"color" : "rgb(255, 255, 255)",
+	"fontWeight" : "400",
+	"height" : "32px",
+	"backgroundColor" : "rgb(23, 118, 191)",
+	"label" : "button"
+},
+"h1" : {
+	"font-size" : "24px",
+    "font-weight" : "500",
+    "line-height" : "32px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+},
+"h2" : {
+	"font-size" : "22px",
+    "font-weight" : "500",
+    "line-height" : "32px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+},
+"h3" : {
+	"font-size" : "20px",
+    "font-weight" : "500",
+    "line-height" : "28px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+},
+"h4" : {
+	"font-size" : "18px",
+    "font-weight" : "500",
+    "line-height" : "24px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+},
+"h5" : {
+	"font-size" : "16px",
+    "font-weight" : "500",
+    "line-height" : "24px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+},
+"h6" : {
+	"font-size" : "14px",
+    "font-weight" : "500",
+    "line-height" : "24px",
+	"color" : "rgb(51, 51, 51)",
+	"label" : "heading"
+}
+}
