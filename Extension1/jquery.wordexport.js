@@ -18,29 +18,37 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
             // Remove hidden elements from the output
             markup.each(function() {
                 var self = $(this);
-                if (self.is(':hidden'))
+                if (self.is(':hidden')){
                     self.remove();
+                }
             });
 
             // Embed all images using Data URLs
             var images = Array();
             var img = markup.find('img');
+
+            var pdf = new jsPDF("p", "mm", "a4");
+
+
+
             for (var i = 0; i < img.length; i++) {
                 // Calculate dimensions of output image
-                var w = Math.min(img[i].width, options.maxWidth);
-                var h = img[i].height * (w / img[i].width);
+                /*var w = Math.min(img[i].width, options.maxWidth);
+                var h = img[i].height * (w / img[i].width);*/
+                var pdfWidth = pdf.internal.pageSize.getWidth()-25;
+                var pdfHeight = (img[i].height * pdfWidth)/ img[i].width;
                 // Create canvas for converting image to data URL
                 var canvas = document.createElement("CANVAS");
-                canvas.width = w;
-                canvas.height = h;
+                canvas.width = pdfWidth;
+                canvas.height = pdfHeight;
                 // Draw image to canvas
                 var context = canvas.getContext('2d');
-                context.drawImage(img[i], 0, 0, w, h);
+                context.drawImage(img[i], 0, 0, pdfWidth, pdfHeight);
                 // Get data URL encoding of image
                 var uri = canvas.toDataURL("image/png");
                 $(img[i]).attr("src", img[i].src);
-                img[i].width = w;
-                img[i].height = h;
+                img[i].width = pdfWidth;
+                img[i].height = pdfHeight;
                 // Save encoded image to array
                 images[i] = {
                     type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
@@ -53,13 +61,13 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
             // Prepare bottom of mhtml file with image data
             var mhtmlBottom = "\n";
             for (var i = 0; i < images.length; i++) {
-                mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
-                mhtmlBottom += "Content-Location: " + images[i].location + "\n";
-                mhtmlBottom += "Content-Type: " + images[i].type + "\n";
-                mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
+               // mhtmlBottom += "--NEXT.ITEM-BOUNDARY\n";
+               // mhtmlBottom += "Content-Location: " + images[i].location + "\n";
+               // mhtmlBottom += "Content-Type: " + images[i].type + "\n";
+               // mhtmlBottom += "Content-Transfer-Encoding: " + images[i].encoding + "\n\n";
                 mhtmlBottom += images[i].data + "\n\n";
             }
-            mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
+           // mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
 
             //TODO: load css from included stylesheet
             var styles = "";
@@ -68,17 +76,71 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
             var fileContent = static.mhtml.top.replace("_html_", static.mhtml.head.replace("_styles_", styles) + static.mhtml.body.replace("_body_", markup.html())) + mhtmlBottom;
 
             // Create a Blob with the file contents
-            var blob = new Blob([fileContent], {
+          /*  var blob = new Blob([fileContent], {
                 type: "application/msword;charset=utf-8"
-            });
-            saveAs(blob, fileName + ".doc");
+            });*/
+           // saveAs(blob, fileName + ".pdf");
+           /* var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write(fileContent);
+            printWindow.print();*/
+           /* var doc = new jsPDF();
+            doc.output("blob");
+            doc.html(fileContent, {
+                callback: function(doc) {
+                    doc.save("output.pdf");
+                },
+                x: 10,
+                y: 10
+            });*/
+            //doc.fromHTML($temp.html(),{});
+            // saveAs(blob, fileName + ".doc");
+                //Set the File URL.
+           /* var oReq = new XMLHttpRequest();
+// The Endpoint of your server
+            var URLToPDF = "https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf";
+
+// Configure XMLHttpRequest
+            oReq.open("GET", URLToPDF, true);
+
+// Important to use the blob response type
+            oReq.responseType = "blob";
+
+// When the file request finishes
+// Is up to you, the configuration for error events etc.
+            oReq.onload = function() {
+                // Once the file is downloaded, open a new window with the PDF
+                // Remember to allow the POP-UPS in your browser
+                var file = new Blob([fileContent], {
+                    type: 'application/pdf'
+                });
+
+                // Generate file download directly in the browser !
+                saveAs(file, "mypdffilename.pdf");
+            };
+
+            oReq.send();*/
+           // window.jsPDF = window.jspdf.jsPDF;
+         //   var pdf = new jsPDF();
+           /* pdf.canvas.height = 72 * 11;
+            pdf.canvas.width = 72 * 8.5;
+*/
+            //var source = window.document.getElementsByTagName("body")[0];
+
+            pdf.fromHTML(markup.html(), 15, 15, {
+                    'width': 100 // max width of content on PDF
+                },
+                function(bla){pdf.save('UI-AnalyzerReport.pdf');},
+                0);
+          /*  pdf.fromHTML(source, 15, 15);
+
+            pdf.save('test.pdf');*/
         };
     })(jQuery);
 } else {
     if (typeof jQuery === "undefined") {
-        console.error("jQuery Word Export: missing dependency (jQuery)");
+        console.error("jQuery Pdf Export: missing dependency (jQuery)");
     }
     if (typeof saveAs === "undefined") {
-        console.error("jQuery Word Export: missing dependency (FileSaver.js)");
+        console.error("jQuery Pdf Export: missing dependency (jspdf.min.js)");
     }
 }
