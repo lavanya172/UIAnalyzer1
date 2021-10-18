@@ -973,12 +973,16 @@ li.ui-state-focus{
 
 
 #he_tray_close{
-    top:10px !important;
-    left:357px !important;
-    position:fixed !important;
-    z-index:2000000021 !important;
+    /*top:10px !important;*/
+    /*left:357px !important;*/
+    /*position:fixed !important;*/
+    /*z-index:2000000021 !important;*/
 }
 
+svg:not(:root) {
+    overflow: hidden;
+    fill: white;
+}
 
 .he_close_button{
     font-size:30px !important;
@@ -1424,6 +1428,11 @@ div#purple_dialog_close{
 
 .addBorder{
 	'border' : '3px solid red';
+}
+
+.gauge {
+    display: block;
+    margin: 0 0 1% 0;
 }
 
 
