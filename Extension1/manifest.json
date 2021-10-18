@@ -25,11 +25,11 @@
 	"content_scripts": [
     {
       "matches": ["http://vmyai1011bvt02:9072/*","http://localhost:9182/*", "http://localhost:9072/*", "https://idm-aw-us.softwareag-stage.cloud/*", "https://devrealm2.gateway.saglive.com/*", "https://default.apiportal-az-us.webmethods-stage.io/*", "http://daeyaix1bvt01:9072/*", "https://www.google.co.in/*","http://vmgora01:9072/*"],
-      "js": ["jquery-3.5.1.min.js","FileSaver.js","jspdf.min.js","jquery.wordexport.js"],
+      "js": ["jquery-3.5.1.min.js","FileSaver.js","es6-promise.auto.min.js","jspdf.min.js","html2canvas.min.js","html2pdf.bundle.min.js","jquery.wordexport.js"],
 	  "css" : ["style.css"]
     }
 	],
 	"options_page": "options.html",
     "manifest_version": 2,
-	"web_accessible_resources": [ "tray.html","config.json","FileSaver.js","jspdf.min.js","jquery.wordexport.js","images/close_icon.png","get_started32.png"]
+	"web_accessible_resources": [ "tray.html","config.json","FileSaver.js","es6-promise.auto.min.js","jspdf.min.js","html2canvas.min.js","html2pdf.bundle.min.js","jquery.wordexport.js","images/close_icon.png","get_started32.png"]
   }

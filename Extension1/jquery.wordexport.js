@@ -22,20 +22,42 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
                     self.remove();
                 }
             });
-
+            // var a=markup.html();
+            // var b= a[3].children;
+            // for(var c=0;c<b.length;c++){
+            //     if(b[c].className=="dummy-t"){
+            //         /*var b=innerSelf.children();
+            //         console.log(index,this);
+            //         console.log(index,b.length);*/
+            //         b[c].setAttribute("background-color","yellow");
+            //     }
+            // }
+            /*a.each(
+                function(index) {
+                    var innerSelf=$(this);
+                    if(a[3].className=="dummy-t"){
+                        var b=innerSelf.children();
+                        console.log(index,this);
+                        console.log(index,b.length);
+                        a[3].css("background-color", "yellow");
+                    }
+                }
+            );*/
+            //console.log("aaaaaaa-------"+a);
             // Embed all images using Data URLs
             var images = Array();
             var img = markup.find('img');
-
+            img.removeClass("nonedisplay");
             var pdf = new jsPDF("p", "mm", "a4");
 
-
-
+           // var pdf = new jsPDF({orientation: "p", lineHeight: 0.25});
+            pdf.setLineHeightFactor(0.5);
+            pdf.setFontSize(1);
             for (var i = 0; i < img.length; i++) {
                 // Calculate dimensions of output image
                 /*var w = Math.min(img[i].width, options.maxWidth);
                 var h = img[i].height * (w / img[i].width);*/
-                var pdfWidth = pdf.internal.pageSize.getWidth()-25;
+                var pdfWidth = pdf.internal.pageSize.getWidth();
                 var pdfHeight = (img[i].height * pdfWidth)/ img[i].width;
                 // Create canvas for converting image to data URL
                 var canvas = document.createElement("CANVAS");
@@ -47,8 +69,8 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
                 // Get data URL encoding of image
                 var uri = canvas.toDataURL("image/png");
                 $(img[i]).attr("src", img[i].src);
-                img[i].width = pdfWidth;
-                img[i].height = pdfHeight;
+                img[i].width = pdfWidth*3;
+                img[i].height = pdfHeight*3;
                 // Save encoded image to array
                 images[i] = {
                     type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
@@ -126,14 +148,26 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
 */
             //var source = window.document.getElementsByTagName("body")[0];
 
-            pdf.fromHTML(markup.html(), 15, 15, {
+           /* pdf.fromHTML(markup.html(), 15, 15, {
                     'width': 100 // max width of content on PDF
                 },
-                function(bla){pdf.save('UI-AnalyzerReport.pdf');},
-                0);
-          /*  pdf.fromHTML(source, 15, 15);
+                function(bla){
+                pdf.addPage();
+                    pdf.addPage();
+                pdf.save('UI-AnalyzerReport.pdf');},
+                0);*/
+            var opt = {
+                margin:       [10, 15, 10, 15],
+                filename:     `UI-AnalyzerReport.pdf`,
+                image:        { type: 'png', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(markup.html()).set(opt).save();
 
-            pdf.save('test.pdf');*/
+            /*  pdf.fromHTML(source, 15, 15);
+
+              pdf.save('test.pdf');*/
         };
     })(jQuery);
 } else {
